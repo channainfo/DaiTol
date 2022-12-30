@@ -1,17 +1,8 @@
 import { ExecFailureError } from "./exec_failure_error";
+import { ExecParam } from "./exec_param";
 
-export class ExecResult extends Map<string, any> {
+export class ExecResult extends ExecParam {
   failed: boolean = false
-
-  public static from(options: Map<string, any>): ExecResult {
-    let execResult = new this()
-
-    options.forEach((value: any, key: string) => {
-      execResult.set(key, value);
-    })
-
-    return execResult;
-  }
 
   public fail(message: string) {
     this.failByMessage(message)
