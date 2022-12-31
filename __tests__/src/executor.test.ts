@@ -69,6 +69,12 @@ describe("Executor", () => {
   })
 
   describe(".call", () => {
+    it("accept default options", () => {
+      let execResult = describedClass.call()
+      expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
+      expect(execResult.isSuccess()).toEqual(true)
+    })
+
     it("execute the call and return exec result", () => {
       let options = new Map<string, any>()
       let execResult = describedClass.call(options)
@@ -79,6 +85,12 @@ describe("Executor", () => {
   })
 
   describe(".callAsyn", () => {
+    it("accept default options", async () => {
+      let execResult = await describedClass.callAsync()
+      expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
+      expect(execResult.isSuccess()).toEqual(true)
+    })
+
     it("execute the call and return exec result", async () => {
       let options = new Map<string, any>()
       let execResult = await describedClass.callAsync(options)

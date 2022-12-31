@@ -19,7 +19,7 @@ export class Executor {
     return this.execParam.get(name)
   }
 
-  public static async callAsync(options: Map<string, any>): Promise<ExecResult> {
+  public static async callAsync(options: Map<string, any> = new Map<string, any>()): Promise<ExecResult> {
     let object = new this(options)
 
     try {
@@ -31,7 +31,7 @@ export class Executor {
     }
   }
 
-  public static call(options: Map<string, any>): ExecResult {
+  public static call(options: Map<string, any> = new Map<string, any>()): ExecResult {
     let object = new this(options)
 
     try {
