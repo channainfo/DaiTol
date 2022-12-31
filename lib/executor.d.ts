@@ -6,8 +6,8 @@ export declare class Executor {
     constructor(options?: Map<string, any>);
     getResult(name: string): any;
     getParam(name: string): any;
-    static callAsync(options: Map<string, any>): Promise<ExecResult>;
-    static call(options: Map<string, any>): ExecResult;
+    static callAsync(options?: Map<string, any>): Promise<ExecResult>;
+    static call(options?: Map<string, any>): ExecResult;
     handleError(ex: any): ExecResult;
     callAsync(): Promise<void>;
     call(): void;

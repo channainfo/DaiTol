@@ -8,6 +8,11 @@
   yarn tsc --init
 
   npm adduser
+
+  # make sure to build the ts first
+  npm run build
+
+  # publish the build to npm repo
   npm publish
 
   # bump a new version
