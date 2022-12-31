@@ -1,14 +1,17 @@
 {
   "name": "dai_tol",
-  "version": "1.0.0",
-  "description": "Simple tool to manage single responsability in a simple manner",
+  "version": "1.0.0-beta",
+  "description": "Dev friendly simple yet powerful single responsability",
   "main": "index.js",
   "author": "Channa Ly",
   "license": "MIT",
   "scripts": {
     "test": "jest"
   },
-  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/channainfo/DaiTol.git"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

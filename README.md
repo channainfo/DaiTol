@@ -6,4 +6,10 @@
   npm init
   yarn add -D typescript
   yarn tsc --init
+
+  npm adduser
+  npm publish
+
+  # bump a new version
+  npm version patch
 ```
