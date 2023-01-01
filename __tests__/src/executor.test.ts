@@ -1,3 +1,4 @@
+import { ExecResult } from './../../src/exec_result';
 import { describe } from "@jest/globals";
 import DaiTol from "../../src";
 
@@ -112,6 +113,10 @@ describe("Executor", () => {
         this.confirmRegistrationFeePayment()
       }
 
+      public async callAsync() {
+        this.execResult.set("someResult", true)
+      }
+
       private confirmAgeEligibility() {
         let age = this.getParam("age")
 
@@ -194,6 +199,19 @@ describe("Executor", () => {
 
           expect(execResult.isSuccess()).toEqual(false)
           expect(execResult.errorMessage()).toEqual("Not enough credit")
+        })
+      })
+    })
+
+    describe('.callAsync', () => {
+      it("return success", async () => {
+        let execResult = await describedClass.callAsync()
+
+        expect(execResult.isSuccess()).toEqual(true)
+        expect(execResult.get("someResult")).toEqual(true)
+
+        describedClass.callAsync().then((result) => {
+          expect(execResult.get("someResult")).toEqual(true)
         })
       })
     })

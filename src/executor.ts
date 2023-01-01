@@ -6,8 +6,9 @@ export class Executor {
   public execResult: ExecResult
   public execParam: ExecParam
 
-  constructor(options: Map<string, any> = new Map<string, any>()) {
-    this.execParam = ExecParam.from(options);
+  constructor(options?: Map<string, any>) {
+
+    this.execParam = options ? ExecParam.from(options) : new ExecResult()
     this.execResult = new ExecResult()
   }
 
@@ -19,8 +20,8 @@ export class Executor {
     return this.execParam.get(name)
   }
 
-  public static async callAsync(options: Map<string, any> = new Map<string, any>()): Promise<ExecResult> {
-    let object = new this(options)
+  public static async callAsync(options?: Map<string, any>): Promise<ExecResult> {
+    let object = options ? new this(options) : new this()
 
     try {
       await object.callAsync()
@@ -31,8 +32,8 @@ export class Executor {
     }
   }
 
-  public static call(options: Map<string, any> = new Map<string, any>()): ExecResult {
-    let object = new this(options)
+  public static call(options?: Map<string, any>): ExecResult {
+    let object = options ? new this(options) : new this()
 
     try {
       object.call()
