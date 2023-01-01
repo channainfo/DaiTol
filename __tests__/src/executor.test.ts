@@ -203,19 +203,6 @@ describe("Executor", () => {
       })
     })
 
-    describe('.callAsync', () => {
-      it("return success", async () => {
-        let execResult = await describedClass.callAsync()
-
-        expect(execResult.isSuccess()).toEqual(true)
-        expect(execResult.get("someResult")).toEqual(true)
-
-        describedClass.callAsync().then((result) => {
-          expect(execResult.get("someResult")).toEqual(true)
-        })
-      })
-    })
-
     describe("with valid user input", () => {
       it("return fullname, registration code and transaction id if ", () => {
         let options: Map<string, any> = new Map<string, any>([
@@ -230,6 +217,19 @@ describe("Executor", () => {
         expect(execResult.get("remainingBalance")).toEqual(15)
         expect(execResult.get("transactionId")).toEqual(transactionId)
         expect(execResult.get("registrationCode")).toEqual(registrationCode)
+      })
+    })
+  })
+
+  describe('.callAsync', () => {
+    it("return success", async () => {
+      let execResult = await describedClass.callAsync()
+
+      expect(execResult.isSuccess()).toEqual(true)
+      expect(execResult.get("someResult")).toEqual(true)
+
+      describedClass.callAsync().then((result) => {
+        expect(execResult.get("someResult")).toEqual(true)
       })
     })
   })
