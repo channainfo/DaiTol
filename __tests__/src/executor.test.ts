@@ -1,4 +1,4 @@
-import { ExecResult } from './../../src/exec_result';
+
 import { describe } from "@jest/globals";
 import DaiTol from "../../src";
 
@@ -55,6 +55,26 @@ describe("Executor", () => {
     })
   })
 
+  describe("#getResult", () => {
+
+    it("return value from execResult by name", () => {
+      let subject = new describedClass()
+      let execResult = new DaiTol.ExecResult();
+
+      execResult.set("name", "Joe")
+      subject.execResult = execResult;
+
+      let result = subject.getResult("name")
+      expect(result).toEqual("Joe")
+    })
+
+    it("return result from execResult", () => {
+      let subject = new describedClass()
+      let result = subject.getResult("name")
+      expect(result).toBeUndefined()
+    })
+  })
+
   describe('#handleError', () => {
     let subject = new describedClass()
 
@@ -73,15 +93,32 @@ describe("Executor", () => {
     it("accept default options", () => {
       let execResult = describedClass.call()
       expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
-      expect(execResult.isSuccess()).toEqual(true)
+    })
+
+    it("require call to be implemented", () => {
+      let execResult = describedClass.call()
+
+      expect(execResult.errorMessage()).toEqual('call need to be implemented')
+      expect(execResult.isSuccess()).toEqual(false)
     })
 
     it("execute the call and return exec result", () => {
+      jest.spyOn(describedClass.prototype, 'call').mockImplementation(() => { });
+
       let options = new Map<string, any>()
       let execResult = describedClass.call(options)
 
       expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
       expect(execResult.isSuccess()).toEqual(true)
+
+      jest.restoreAllMocks();
+    })
+  })
+
+  describe('#call', () => {
+    it("throw an ExecFailureError", () => {
+      let subject = new describedClass()
+      expect(() => { subject.call() }).toThrowError(DaiTol.ExecFailureError)
     })
   })
 
@@ -89,15 +126,32 @@ describe("Executor", () => {
     it("accept default options", async () => {
       let execResult = await describedClass.callAsync()
       expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
-      expect(execResult.isSuccess()).toEqual(true)
+    })
+
+    it("require callAsync to be implemented", async () => {
+      let execResult = await describedClass.callAsync()
+
+      expect(execResult.isSuccess()).toEqual(false)
+      expect(execResult.errorMessage()).toEqual('callAsync need to be implemented')
     })
 
     it("execute the call and return exec result", async () => {
+      jest.spyOn(describedClass.prototype, 'callAsync').mockImplementation(async () => { jest.fn().mockResolvedValue('') });
+
       let options = new Map<string, any>()
       let execResult = await describedClass.callAsync(options)
 
       expect(execResult).toBeInstanceOf(DaiTol.ExecResult)
       expect(execResult.isSuccess()).toEqual(true)
+
+      jest.restoreAllMocks();
+    })
+  })
+
+  describe('#callAsync', () => {
+    it("throw an ExecFailureError", async () => {
+      let subject = new describedClass()
+      expect(subject.callAsync()).rejects.toThrowError(DaiTol.ExecFailureError)
     })
   })
 
@@ -217,19 +271,6 @@ describe("Executor", () => {
         expect(execResult.get("remainingBalance")).toEqual(15)
         expect(execResult.get("transactionId")).toEqual(transactionId)
         expect(execResult.get("registrationCode")).toEqual(registrationCode)
-      })
-    })
-  })
-
-  describe('.callAsync', () => {
-    it("return success", async () => {
-      let execResult = await describedClass.callAsync()
-
-      expect(execResult.isSuccess()).toEqual(true)
-      expect(execResult.get("someResult")).toEqual(true)
-
-      describedClass.callAsync().then((result) => {
-        expect(execResult.get("someResult")).toEqual(true)
       })
     })
   })

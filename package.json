@@ -1,11 +1,18 @@
 {
   "name": "dai_tol",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Dev friendly simple yet powerful single responsability",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Channa Ly",
   "license": "MIT",
+  "keywords": [
+    "single responsability",
+    "interactor",
+    "service object",
+    "Dai tol",
+    "Dai_Tol"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"

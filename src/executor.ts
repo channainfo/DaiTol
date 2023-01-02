@@ -1,6 +1,7 @@
 import { ExecResult } from "./exec_result";
 import { ExecFailureError } from "./exec_failure_error";
 import { ExecParam } from "./exec_param";
+import DaiTol from ".";
 
 export class Executor {
   public execResult: ExecResult
@@ -52,11 +53,11 @@ export class Executor {
 
   // override and set execResult
   public async callAsync() {
-
+    throw new DaiTol.ExecFailureError('callAsync need to be implemented')
   }
 
   // override and set execResult
   public call() {
-
+    throw new DaiTol.ExecFailureError('call need to be implemented')
   }
 }
