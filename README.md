@@ -1,10 +1,10 @@
 # Get Started with Dai Tol
 
-Very light weight and simple Single responsability for a nodejs project.
+Very light weight and simple **single responsability** for a nodejs project.
 
 ## Why do you need this package?
 
-Everytime I start working in a typescript project, I some how need a way to implement single responsability in my code. I keep being repeated over and over so this time when I work on a side project in Solana blockchain <https://github.com:channainfo/solapp> I decide to extract this to its own package.
+Everytime I start working in a typescript project, I some how need a way to implement single responsability in my code. I keep repeating doing the same thing  over and over. When I worked on a side project in Solana blockchain <https://github.com/channainfo/solapp> I decided to extract this to its own package.
 
 The goal of this packages:
 
@@ -64,9 +64,11 @@ I found that the variant 2 is more precise, short and easy to discove than the v
 
 This is the part I like the most, for every ***call*** / ***callAsync*** definations are instruction-based and failed-safe, for example imagine  ***PrimaryStudentRegistrationExecutor*** we have to handle 3 instructions:
 
-- 1. Check if the age of the registrant is valid. If the age is valid go to the next instruction. If not break the execution and return an error with a error message.
-- 2. Check if the registrant already exists to avoid duplicates registration. If the registrant does not exist in in the file, proceed to the next instruction otherwise stop the execution and return execution error with an error message.
-- 3. Process payment and register. If the registration has enough credit to pay then register, otherwise return an execution error with an error message.
+1. Check if the age of the registrant is valid.
+2. Check if the registrant already exists to avoid duplicates registration.
+3. Process payment and register. If the registration has enough credit to pay then register.
+
+**if any of the blocks above fails, the execution will stop. When an execution fails, you should provide infos, normally an error message and/or error code.**
 
 The implementation might look like this:
 
@@ -80,7 +82,7 @@ class PrimaryStudentRegistrationExecutor extends DaiTol.Executor  {
 }
 ```
 
-There are three main methods ( 3 blocks of code ) in the call() method. If it failed safe and no condition needed to be added in the call() method.
+There are three main methods ( 3 blocks of code ) in the call() method. If any of the method fails, the call() will exited and return an execution result object.
 
 ## Usage
 
@@ -93,10 +95,6 @@ class PrimaryStudentRegistrationExecutor extends DaiTol.Executor {
     this.confirmAgeEligibility()
     this.confirmRegistrationFile()
     this.confirmRegistrationFeePayment()
-  }
-
-  public async callAsync() {
-    this.execResult.set("someResult", true)
   }
 
   private confirmAgeEligibility() {
@@ -150,67 +148,58 @@ class PrimaryStudentRegistrationExecutor extends DaiTol.Executor {
 }
 ```
 
-The test:
+Invocation
 
 ```ts
-describe("PrimaryStudentRegistrationExecutor", () => {
-  describe('.call', () => {
-    describe("with invalid input", () => {
-      it("is failed to register if age is too young < 6", () => {
-        let options: Map<string, any> = new Map<string, any>([["age", 5]])
-        let execResult = describedClass.call(options)
+// it is failed to register if age is too young < 6
+let options: Map<string, any> = new Map<string, any>([["age", 5]])
+let execResult = PrimaryStudentRegistrationExecutor.call(options)
 
-        expect(execResult.isSuccess()).toEqual(false)
-        expect(execResult.errorMessage()).toEqual("Too young")
-      })
+console.log(execResult.isSuccess())    // false
+console.log(execResult.errorMessage()) // "Too young"
 
-      it("is failed to register if user try to registed again", () => {
-        let options: Map<string, any> = new Map<string, any>([["age", 6], ["firstName", "Joe"], ["lastName", "ann"]])
-        let execResult = describedClass.call(options)
 
-        expect(execResult.isSuccess()).toEqual(false)
-        expect(execResult.errorMessage()).toEqual("Already registred")
-      })
+// it is failed to register if user try to registed again
+let options: Map<string, any> = new Map<string, any>([["age", 6], ["firstName", "Joe"], ["lastName", "ann"]])
+let execResult = PrimaryStudentRegistrationExecutor.call(options)
 
-      it("is failed to register if the user does not have enough to pay for the registration fee", () => {
-        let options: Map<string, any> = new Map<string, any>([
-          ["age", 9],
-          ["firstName", "Enrique"],
-          ["lastName", "Ly"],
-          ["accountAvailable", 3]
-        ])
-        let execResult = describedClass.call(options)
+console.log(execResult.isSuccess())    // false
+console.log(execResult.errorMessage()) // "Already registred"
 
-        expect(execResult.isSuccess()).toEqual(false)
-        expect(execResult.errorMessage()).toEqual("Not enough credit")
-      })
-    })
 
-    describe("with valid user input", () => {
-      it("return fullname, registration code and transaction id if ", () => {
-        let options: Map<string, any> = new Map<string, any>([
-          ["age", 9],
-          ["firstName", "Enrique"],
-          ["lastName", "Ly"],
-          ["accountAvailable", 20]
-        ])
-        let execResult = describedClass.call(options)
+// it is failed to register if the user does not have enough to pay for the registration fee
+let options: Map<string, any> = new Map<string, any>([
+  ["age", 9],
+  ["firstName", "Enrique"],
+  ["lastName", "Ly"],
+  ["accountAvailable", 3]
+])
+let execResult = PrimaryStudentRegistrationExecutor.call(options)
 
-        expect(execResult.isSuccess()).toEqual(true)
-        expect(execResult.get("remainingBalance")).toEqual(15)
-        expect(execResult.get("transactionId")).toEqual(transactionId)
-        expect(execResult.get("registrationCode")).toEqual(registrationCode)
-      })
-    })
-  })
-})
+console.log(execResult.isSuccess())    // false
+console.log(execResult.errorMessage()) // "Not enough credit"
+
+
+// it return fullname, registration code and transaction id if input params are valid
+let options: Map<string, any> = new Map<string, any>([
+  ["age", 9],
+  ["firstName", "Enrique"],
+  ["lastName", "Ly"],
+  ["accountAvailable", 20]
+])
+let execResult = PrimaryStudentRegistrationExecutor.call(options)
+
+console.log(execResult.isSuccess())             // true
+console.log(execResult.get("remainingBalance")) // 15
+console.log(execResult.get("transactionId"))    // transactionId
+console.log(execResult.get("registrationCode")) // registrationCode
 
 ```
 
-- A Executor <https://github.com/channainfo/DaiTol/blob/master/src/executor.ts> receives an optional parameter  Map<string,any>
+- You can see the detail of the Executor class here:  <https://github.com/channainfo/DaiTol/blob/master/src/executor.ts> receives an optional parameter  Map<string,any>
 - The Executor.call/callAsync method return a ExecResult <https://github.com/channainfo/DaiTol/blob/master/src/exec_result.ts>
 
-A full example here <https://github.com/channainfo/DaiTol/blob/master/>**tests**/src/executor.test.ts
+A full example here <https://github.com/channainfo/DaiTol/blob/master/tests/src/executor.test.ts>
 Another example <https://github.com/channainfo/solapp/blob/main/prompts/keygen.ts>
 
 ## Requirement
@@ -222,7 +211,7 @@ TypeError: Class constructor cannot be invoked without 'new'
 
 ```
 
-The error occurs when the target property in **tsconfig.json** is set to lower than es6 or you instantiate a class without the new operator.
+The error occurs when the target property in **tsconfig.json** is set to lower than es6. If so, update your tsconfig.json target to:
 
 ```json
 // tsconfig.json

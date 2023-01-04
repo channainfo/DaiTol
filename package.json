@@ -1,6 +1,6 @@
 {
   "name": "dai_tol",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Dev friendly simple yet powerful single responsability",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
