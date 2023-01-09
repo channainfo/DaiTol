@@ -9,7 +9,7 @@ export class Executor {
 
   constructor(options?: Map<string, any>) {
 
-    this.execParam = options ? ExecParam.from(options) : new ExecResult()
+    this.execParam = options ? ExecParam.from(options) : new ExecParam()
     this.execResult = new ExecResult()
   }
 

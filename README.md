@@ -4,13 +4,13 @@ Very light weight and simple **single responsability** for a nodejs project.
 
 ## Why do you need this package?
 
-Everytime I start working in a typescript project, I some how need a way to implement single responsability in my code. I keep repeating doing the same thing  over and over. When I worked on a side project in Solana blockchain <https://github.com/channainfo/solapp> I decided to extract this to its own package.
+Everytime I start working on a typescript project, I somehow need a way to implement a single responsability in my code. I keep repeating the same thing over and over.This time, when I worked on a side project in the Solana blockchain <https://github.com/channainfo/solapp> I decided to extract this to its own package.
 
-The goal of this packages:
+What does this package offer:
 
 - Making single responsability easy, consistent and minimal.
-- Code discoverability
-- Instruction as a building block
+- Easy code discoverability.
+- Make instruction as a building block to make it easy to test.
 
 ### Making single responsability easy, consistent and minimal
 
@@ -44,7 +44,7 @@ PrimaryStudentRegistrationExecutor.callAsync().then((execResult)=> {
 })
 ```
 
-### Easy discoverability
+### Easy code discoverability
 
 There are two choices, I've experienced with:
 
@@ -58,9 +58,9 @@ let execResult = PrimaryStudentRegistrationExecutor.call()
 
 ```
 
-I found that the variant 2 is more precise, short and easy to discove than the variant 1. Searching **PrimaryStudentRegistrationExecutor.call** in the code is very straigh forward.
+I found that the variant 2 is more precise, short and easy to discover than the variant 1. Searching **PrimaryStudentRegistrationExecutor.call** in the code is very straght forward.
 
-### Building block
+### Instruction as a building block
 
 This is the part I like the most, for every ***call*** / ***callAsync*** definations are instruction-based and failed-safe, for example imagine  ***PrimaryStudentRegistrationExecutor*** we have to handle 3 instructions:
 
@@ -199,8 +199,7 @@ console.log(execResult.get("registrationCode")) // registrationCode
 - You can see the detail of the Executor class here:  <https://github.com/channainfo/DaiTol/blob/master/src/executor.ts> receives an optional parameter  Map<string,any>
 - The Executor.call/callAsync method return a ExecResult <https://github.com/channainfo/DaiTol/blob/master/src/exec_result.ts>
 
-A full example here <https://github.com/channainfo/DaiTol/blob/master/tests/src/executor.test.ts>
-Another example <https://github.com/channainfo/solapp/blob/main/prompts/keygen.ts>
+A full example here <https://github.com/channainfo/DaiTol/blob/master/tests/src/executor.test.ts> and another example <https://github.com/channainfo/solapp/blob/main/prompts/keygen.ts>
 
 ## Requirement
 

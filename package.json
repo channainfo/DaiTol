@@ -1,7 +1,7 @@
 {
   "name": "dai_tol",
-  "version": "1.0.11",
-  "description": "Dev friendly simple yet powerful single responsability",
+  "version": "1.0.12",
+  "description": "A dev friendly tool, simple yet powerful for handling single responsability",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Channa Ly",

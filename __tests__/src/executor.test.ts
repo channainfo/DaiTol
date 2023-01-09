@@ -8,8 +8,9 @@ describe("Executor", () => {
   describe("constructor", () => {
     it("accept default options", () => {
       let subject = new describedClass()
-
+      
       expect(subject.execResult).toBeInstanceOf(DaiTol.ExecResult)
+      expect(subject.execParam).toBeInstanceOf(DaiTol.ExecParam)
     })
 
     it("accept options", () => {
