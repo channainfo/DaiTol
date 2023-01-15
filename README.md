@@ -1,20 +1,17 @@
+
 # Get Started with Dai Tol
 
-Very light weight and simple **single responsability** for a nodejs project.
+Dai Tol is a lib that encapsulate a sequence of interactions to handle complex business logics in your application.
+
+It is inspired by [Rails Service Object](https://www.google.com/search?q=ruby+service+object) and [Interactor](<https://github.com/collectiveidea/interactor>)
 
 ## Why do you need this package?
 
-Everytime I start working on a typescript project, I somehow need a way to implement a single responsability in my code. I keep repeating the same thing over and over.This time, when I worked on a side project in the Solana blockchain <https://github.com/channainfo/solapp> I decided to extract this to its own package.
+Everytime I start working on a typescript project, I somehow need a way to implement a Service Object my code to handle complex user interactions. I keep repeating the same thing over and over.This time, when I worked on a side project in the Solana blockchain <https://github.com/channainfo/solapp> I decided to extract this to its own package.
 
-What does this package offer:
+### Easy, consistent and minimal
 
-- Making single responsability easy, consistent and minimal.
-- Easy code discoverability.
-- Make instruction as a building block to make it easy to test.
-
-### Making single responsability easy, consistent and minimal
-
-You just need to extends from the Executor and then define a public instance method ```call``` or ```calAsyc``` if your single responability is an async.
+You just need to extends from the Executor and then define a public instance method ```call``` or ```calAsyc``` if it is an async.
 
 ```ts
 class PrimaryStudentRegistrationExecutor extends DaiTol.Executor {
@@ -44,7 +41,7 @@ PrimaryStudentRegistrationExecutor.callAsync().then((execResult)=> {
 })
 ```
 
-### Easy code discoverability
+### Code discoverability
 
 There are two choices, I've experienced with:
 
@@ -60,7 +57,7 @@ let execResult = PrimaryStudentRegistrationExecutor.call()
 
 I found that the variant 2 is more precise, short and easy to discover than the variant 1. Searching **PrimaryStudentRegistrationExecutor.call** in the code is very straght forward.
 
-### Instruction as a building block
+### Interaction as a building block
 
 This is the part I like the most, for every ***call*** / ***callAsync*** definations are instruction-based and failed-safe, for example imagine  ***PrimaryStudentRegistrationExecutor*** we have to handle 3 instructions:
 
